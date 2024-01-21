@@ -39,8 +39,8 @@ export async function createEmoji(prevFormState: FormState | undefined, formData
     const verified = await jwtVerify(token ?? "", new TextEncoder().encode(process.env.API_SECRET ?? ""))
     const { ip, isIOS } = jwtSchema.parse(verified.payload)
 
-    const { remaining } = await (isIOS ? ratelimit.ios.limit(ip) : ratelimit.free.limit(ip))
-    if (remaining <= 0) return { message: "Free limit reached, download mobile app for unlimited access." }
+//     const { remaining } = await (isIOS ? ratelimit.ios.limit(ip) : ratelimit.free.limit(ip))
+//     if (remaining <= 0) return { message: "Free limit reached, download mobile app for unlimited access." }
 
     const safetyRating = await replicate.classifyPrompt({ prompt })
     const data = { id, prompt, safetyRating }
