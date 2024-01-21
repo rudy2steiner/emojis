@@ -1,7 +1,7 @@
 "use server"
 
 import { nanoid } from "@/lib/utils"
-import { prisma } from "@/server/db"
+// import { prisma } from "@/server/db"
 import { replicate } from "@/server/replicate"
 import { jwtVerify } from "jose"
 import { redirect } from "next/navigation"
