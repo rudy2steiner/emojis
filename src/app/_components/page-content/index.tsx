@@ -1,5 +1,4 @@
 import { Suspense } from "react"
-import { EmojiGrid } from "../emoji-grid"
 import { EmojiCount } from "../emoji-count"
 import { EmojiForm } from "../emoji-form"
 
@@ -21,10 +20,6 @@ export const PageContent = ({ children, prompt }: PageContentProps) => {
           {children}
         </div>
       </div>
-
-      <Suspense>
-        <EmojiGrid prompt={prompt} />
-      </Suspense>
     </>
   )
 }
