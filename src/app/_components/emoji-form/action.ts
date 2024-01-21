@@ -3,8 +3,6 @@
 import { nanoid } from "@/lib/utils"
 import { prisma } from "@/server/db"
 import { replicate } from "@/server/replicate"
-import { Ratelimit } from "@upstash/ratelimit"
-import { kv } from "@vercel/kv"
 import { jwtVerify } from "jose"
 import { redirect } from "next/navigation"
 import { z } from "zod"
@@ -14,17 +12,17 @@ const jwtSchema = z.object({
   isIOS: z.boolean(),
 })
 
-const ratelimit = {
-  free: new Ratelimit({
-    redis: kv,
-    limiter: Ratelimit.slidingWindow(500, "1 d"),
-  }),
-  ios: new Ratelimit({
-    redis: kv,
-    limiter: Ratelimit.slidingWindow(3, "7 d"),
-    prefix: "ratelimit:ios",
-  }),
-}
+// const ratelimit = {
+//   free: new Ratelimit({
+//     redis: kv,
+//     limiter: Ratelimit.slidingWindow(500, "1 d"),
+//   }),
+//   ios: new Ratelimit({
+//     redis: kv,
+//     limiter: Ratelimit.slidingWindow(3, "7 d"),
+//     prefix: "ratelimit:ios",
+//   }),
+// }
 
 interface FormState {
   message: string
@@ -47,12 +45,12 @@ export async function createEmoji(prevFormState: FormState | undefined, formData
     const safetyRating = await replicate.classifyPrompt({ prompt })
     const data = { id, prompt, safetyRating }
 
-    if (safetyRating >= 9) {
-      await prisma.emoji.create({ data: { ...data, isFlagged: true } })
-      return { message: "Nice try! Your prompt is inappropriate, let's keep it PG." }
-    }
+//     if (safetyRating >= 9) {
+//       await prisma.emoji.create({ data: { ...data, isFlagged: true } })
+//       return { message: "Nice try! Your prompt is inappropriate, let's keep it PG." }
+//     }
 
-    await Promise.all([prisma.emoji.create({ data }), replicate.createEmoji(data)])
+    await Promise.all([true, replicate.createEmoji(data)])
   } catch (error) {
     console.error(error)
     return { message: "Connection error, please refresh the page." }
